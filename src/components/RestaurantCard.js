@@ -15,8 +15,8 @@ const RestaurantCard = ({
             </img>
             <h2>{name}</h2>
             <p>{cuisines.join(", ")}</p>
-            <p>{costForTwo}</p>
-            <p>Rating: {avgRating} stars</p>
+            <p>💵: {costForTwo}</p>
+            <p>Rating: {avgRating} ⭐</p>
         </div>
     )
 }

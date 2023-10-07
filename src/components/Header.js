@@ -1,4 +1,6 @@
 import { useState } from "react";
+import logo from "../Assets/Images/logo.png";
+import { Link } from "react-router-dom";
 
 // const IsLoggedIn = () => {
 //     return true;
@@ -11,7 +13,7 @@ const Title = () => {
                 <img
                     alt="logo"
                     className="logo"
-                    src="https://expresseats.online/assets/images/website-logo-icon/225804142023210331.png">
+                    src={logo}>
                 </img>
                 ExpressEats
             </a>
@@ -28,10 +30,10 @@ const Header = () => {
             <Title />
             <div className='nav-items'>
                 <ul className="sidelist">
-                    <li>Home</li>
-                    <li>About</li>
-                    <li>Contact</li>
-                    <li>Cart</li>
+                    <li><Link to={"/"}>Home</Link></li>
+                    <li><Link to={"/about"}>About</Link></li>
+                    <li><Link to={"/contact"}>Contact</Link></li>
+                    <li><Link to={"/cart"}>Cart</Link></li>
                 </ul>
             </div>
             { isLoggedIn ? <button onClick={() => setIsLoggedIn(false)}>Log Out</button> : <button onClick={() => setIsLoggedIn(true)}>Log In</button>}
