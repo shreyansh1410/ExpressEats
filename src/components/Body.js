@@ -3,6 +3,7 @@ import { restaurantList } from "../constants";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnline from "../Utils/useOnline";
 
 function filterRestaurant(searchText, restaurants) {
     const filterData = restaurants.filter(
@@ -55,6 +56,12 @@ const Body = () => {
         }
       }
 
+    const online = useOnline();
+    if(!online){
+        return(
+            <h1>No internet found, check your connection</h1>
+        )
+    }
     //first the code renders and then useEffect is used
     // console.log("render");
 
