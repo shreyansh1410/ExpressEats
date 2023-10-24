@@ -25,16 +25,18 @@ const RestaurantMenu = () => {
         <Shimmer />
     ) : (
         <div className="restaurant-menu">
-            <div className="restaurant-summary">
+            <div className="restaurant-summary mx-9 my-3 flex justify-around">
+                <div className="restaurantImage">
                 <img
                     className="restaurant-img"
                     src={IMG_URL_CDN + restaurant?.cloudinaryImageId}
                     alt={restaurant?.name}
                 />
-                <div className="restaurant-summary-details">
-                    <h2 className="restaurant-title">{restaurant?.name}</h2>
-                    <p className="restaurant-title">{restaurant?.areaName}, {restaurant?.locality}</p>
-                    <p className="restaurant-tags">{restaurant?.cuisines?.join(", ")}</p>
+                </div>
+                <div className="restaurant-summary-details my-3">
+                    <h2 className="restaurant-title text-5xl">{restaurant?.name}</h2>
+                    <p className="restaurant-title text-xl">{restaurant?.areaName}, {restaurant?.locality}</p>
+                    <p className="restaurant-tags text-2xl">{restaurant?.cuisines?.join(", ")}</p>
                     <div className="restaurant-details">
                         <div
                             className="restaurant-rating"
@@ -58,15 +60,16 @@ const RestaurantMenu = () => {
             </div>
             <div className="restaurant-menu-content">
                 <div className="menu-items-container">
-                    <div className="menu-title-wrap">
-                        <h3 className="menu-title">Recommended</h3>
-                        <p className="menu-count">{menuItems.length} ITEMS</p>
+                    <div className="menu-title-wrap mx-9 my-3 flex justify-center">
+                        <h3 className="menu-title text-2xl">Recommended</h3>
+                        
                     </div>
                     <div className="menu-items-list">
-                        {menuItems.map((item) => (
-                            <div className="menu-item" key={item?.id}>
+                        {menuItems.map((item, index) => (
+                            <div className="menu-item w-[400px] mx-3 my-3 h-[400px] hover:shadow-2xl p-8 hover:bg-gray-100" key={item?.id}>
+                            <p className="menu-count">{index+1} of {menuItems.length} Items</p>
                                 <div className="menu-item-details">
-                                    <h3 className="item-title">{item?.name}</h3>
+                                    <h3 className="item-title text-2xl">{item?.name}</h3>
                                     <p className="item-cost">
                                         {item?.price > 0
                                             ? new Intl.NumberFormat("en-IN", {
@@ -80,12 +83,12 @@ const RestaurantMenu = () => {
                                 <div className="menu-img-wrapper">
                                     {item?.imageId && (
                                         <img
-                                            className="menu-item-img"
+                                            className="menu-item-img w-[250px] h-[150px] rounded-md"
                                             src={ITEM_IMG_CDN_URL + item?.imageId}
                                             alt={item?.name}
                                         />
                                     )}
-                                    <button className="add-btn"> ADD +</button>
+                                    <button className="add-btn bg-red-100"> ADD +</button>
                                 </div>
                             </div>
                         ))}

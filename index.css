@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 *{
-    /* padding: 0;
-    margin: 0; */
+    padding: 0;
+    margin: 0;
     font-family: 'Lato', sans-serif;
 }
 .header {
@@ -49,10 +49,6 @@
     background-color: rgb(232, 230, 230);
     margin-top: 0;
     margin-bottom: 0;
-    /* width: 273px;
-    height: 393px; */
-    /* margin-left: 0px;
-    margin-right: 0px; */
 }
 .card > img {
     width: 100%;
@@ -60,13 +56,11 @@
 }
 .restaurant-list {
     display: flex;
-    /* justify-content: space-between; */
     flex-wrap: wrap;
 }
 .shimmer-card{
     width: 300px;
     height: 400px;
-    /* border: 1px solid black; */
     border-radius: 15px;
     padding: 10px;
     margin: 10px;
@@ -79,4 +73,8 @@
 .restaurant-menu{
     display: flex;
     justify-content: space-between;
-}
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

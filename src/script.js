@@ -1,8 +1,8 @@
-import React, { lazy } from "react";
+import React, { lazy, useState } from "react";
 import ReactDOM from 'react-dom/client';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Body from "./components/Body";
+import Body from "./components/tempbody";
 // import About from "./components/About";
 import Error from "./components/Error";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
@@ -11,6 +11,7 @@ import RestaurantMenu from "./components/RestaurantMenu";
 import Profile from "./components/Profile";
 import { Suspense } from "react";
 import Shimmer from "./components/Shimmer";
+import UserContext from "./Utils/userContext";
 // import Instamart from "./components/Instamart";
 //Config Driven UI
 
@@ -18,12 +19,23 @@ const Instamart = lazy(() => import("./components/Instamart"));
 const About = lazy(() => import("./components/About"));
 
 const AppLayout = () => {
+
+    const [user, setUser] = useState({
+        name: "Shreyansh Shukla",
+        email: "shreyansh@mail.com"
+    });
+
     return (
-        <React.Fragment>
+
+        <UserContext.Provider value={
+            {user: user,
+            setUser: setUser,
+            }
+        }>
             <Header />
             <Outlet/>
             <Footer />
-        </React.Fragment>
+        </UserContext.Provider>
     )
 }
 
