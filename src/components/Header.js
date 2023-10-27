@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import logo from "../Assets/Images/logo.png";
 import { Link } from "react-router-dom";
 import UserContext from "../Utils/userContext";
+import useOnline from "../Utils/useOnline";
+import { useSelector } from "react-redux";
 // const IsLoggedIn = () => {
 //     return true;
 // }
@@ -21,10 +23,16 @@ const Title = () => {
 };
 
 const Header = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const isOnline = useOnline();
 
     const {user} = useContext(UserContext);
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const cartItems = useSelector(store => store.cart.items); 
+    // console.log(cartItems.length);
+    // for (var i = 0; i < cartItems.length; i++) {
+    //     console.log(cartItems[i].name);    
+    // } 
+    
 
     return (
         <div className="flex justify-between align-middle font-semibold">
@@ -34,7 +42,7 @@ const Header = () => {
                     <li className="mx-2"><Link to={"/"}>Home</Link></li>
                     <li className="mx-2"><Link to={"/about"}>About</Link></li>
                     <li className="mx-2"><Link to={"/contact"}>Contact</Link></li>
-                    <li className="mx-2"><Link to={"/cart"}>Cart</Link></li>
+                    <li className="mx-2"><Link to={"/cart"}>Cart - {cartItems.length}</Link></li>
                     <li className="mx-2"><Link to={"/instamart"}>Instamart</Link></li>
                 </ul>
             </div>

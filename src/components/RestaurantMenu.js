@@ -9,10 +9,17 @@ import {
     ITEM_IMG_CDN_URL
 } from "../constants";
 import useRestaurant from "../Utils/useRestaurant";
+import {addItem} from "../Utils/cartSlice"
+import { useDispatch } from "react-redux";
 
 const RestaurantMenu = () => {
     const { resId } = useParams();
     // console.log(resId);
+
+    const dispatch = useDispatch();
+    const addFoodItem = (item) => {
+        dispatch(addItem(item));    //dispatching an action (adding item to cart)
+    }
 
     const [restaurant, menuItems] = useRestaurant(
         swiggy_menu_api_URL,
@@ -25,7 +32,7 @@ const RestaurantMenu = () => {
         <Shimmer />
     ) : (
         <div className="restaurant-menu">
-            <div className="restaurant-summary mx-9 my-3 flex justify-around">
+            <div className="restaurant-summary mx-9 my-3 flex justify-evenly flex-wrap">
                 <div className="restaurantImage">
                 <img
                     className="restaurant-img"
@@ -34,9 +41,9 @@ const RestaurantMenu = () => {
                 />
                 </div>
                 <div className="restaurant-summary-details my-3">
-                    <h2 className="restaurant-title text-5xl">{restaurant?.name}</h2>
-                    <p className="restaurant-title text-xl">{restaurant?.areaName}, {restaurant?.locality}</p>
-                    <p className="restaurant-tags text-2xl">{restaurant?.cuisines?.join(", ")}</p>
+                    <h2 className="restaurant-title text-5xl py-4">{restaurant?.name}</h2>
+                    <p className="restaurant-title text-xl">📍{restaurant?.areaName}, {restaurant?.locality}</p>
+                    <p className="restaurant-tags text-2xl px-7">{restaurant?.cuisines?.join(", ")}</p>
                     <div className="restaurant-details">
                         <div
                             className="restaurant-rating"
@@ -51,10 +58,10 @@ const RestaurantMenu = () => {
                             <i className="fa-solid fa-star"></i>
                             <span>{restaurant?.avgRating}</span>
                         </div>
-                        <div className="restaurant-rating-slash">|</div>
-                        <div>{restaurant?.sla?.slaString}</div>
-                        <div className="restaurant-rating-slash">|</div>
-                        <div>{restaurant?.costForTwoMessage}</div>
+                        {/* <div className="restaurant-rating-slash px-7">|</div> */}
+                        <div className="px-7">⌚{restaurant?.sla?.slaString}</div>
+                        {/* <div className="restaurant-rating-slash">|</div> */}
+                        <div className="px-7">💵{restaurant?.costForTwoMessage}</div>
                     </div>
                 </div>
             </div>
@@ -64,9 +71,9 @@ const RestaurantMenu = () => {
                         <h3 className="menu-title text-2xl">Recommended</h3>
                         
                     </div>
-                    <div className="menu-items-list">
+                    <div className="menu-items-list flex justify-evenly flex-wrap">
                         {menuItems.map((item, index) => (
-                            <div className="menu-item w-[400px] mx-3 my-3 h-[400px] hover:shadow-2xl p-8 hover:bg-gray-100" key={item?.id}>
+                            <div className="menu-item w-[400px] mx-3 my-3 h-[500px] hover:shadow-2xl p-8 hover:bg-gray-100" key={item?.id}>
                             <p className="menu-count">{index+1} of {menuItems.length} Items</p>
                                 <div className="menu-item-details">
                                     <h3 className="item-title text-2xl">{item?.name}</h3>
@@ -88,7 +95,7 @@ const RestaurantMenu = () => {
                                             alt={item?.name}
                                         />
                                     )}
-                                    <button className="add-btn bg-red-100"> ADD +</button>
+                                    <button className="bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" onClick={()=> addFoodItem(item)}> ADD +</button>
                                 </div>
                             </div>
                         ))}

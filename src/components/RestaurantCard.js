@@ -20,7 +20,6 @@ const RestaurantCard = ({
             <p>{cuisines.join(", ")}</p>
             <p>💵: {costForTwo}</p>
             <p>Rating: {avgRating} ⭐</p>
-            <p>{user.name}</p>
         </div>
     )
 }
