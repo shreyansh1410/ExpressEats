@@ -14,6 +14,8 @@ import Shimmer from "./components/Shimmer";
 import UserContext from "./Utils/userContext";
 import { Provider } from "react-redux";
 import store from "./Utils/store";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 // import Cart from "./components/Cart";
 // import Instamart from "./components/Instamart";
 //Config Driven UI
@@ -88,7 +90,15 @@ const appRouter = createBrowserRouter([
                     <Suspense fallback=<Shimmer />>
                         <Cart />
                     </Suspense>
-            }
+            },
+            {
+                path: "login",
+                element: <Login />
+            },
+            {
+                path: "signup",
+                element: <Signup />
+            },
         ]
     }
 ])

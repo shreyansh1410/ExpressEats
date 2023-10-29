@@ -85,7 +85,7 @@ const RestaurantMenu = () => {
                                             }).format(item?.price / 100)
                                             : " "}
                                     </p>
-                                    <p className="item-desc">{item?.description}</p>
+                                    {/* <p className="item-desc">{item?.description}</p> */}
                                 </div>
                                 <div className="menu-img-wrapper">
                                     {item?.imageId && (
