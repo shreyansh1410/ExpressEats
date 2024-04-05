@@ -5,6 +5,7 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnline from "../Utils/useOnline";
 import UserContext from "../Utils/userContext";
+import swiggy_api_URL from "../constants.js"
 
 function filterRestaurant(searchText, restaurants) {
     const filterData = restaurants.filter(
