@@ -35,7 +35,7 @@ const Header = () => {
   // }
 
   return (
-    <div className="flex justify-between align-middle font-medium shadow-md">
+    <div className="flex justify-between align-middle font-medium shadow-md font-quicksand items-center">
       <Title />
       <div className="nav-items">
         <ul className="sidelist flex my-8">

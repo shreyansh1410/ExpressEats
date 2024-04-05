@@ -33,7 +33,7 @@ const RestaurantMenu = () => {
   return !restaurant ? (
     <Shimmer />
   ) : (
-    <div className="restaurant-menu">
+    <div className="restaurant-menu font-quicksand">
       <div className="restaurant-summary mx-9 my-3 flex justify-evenly flex-wrap shadow-md p-6 hover:shadow-lg rounded-lg">
         <div className="restaurantImage w-80 ">
           <img
@@ -43,7 +43,9 @@ const RestaurantMenu = () => {
           />
         </div>
         <div className="restaurant-summary-details my-3">
-          <h2 className="restaurant-title text-5xl py-4">{restaurant?.name}</h2>
+          <h2 className="restaurant-title text-5xl py-4 font-quicksand">
+            {restaurant?.name}
+          </h2>
           <p className="restaurant-title text-xl">
             {" "}
             {restaurant?.areaName}, {restaurant?.locality}{" "}
