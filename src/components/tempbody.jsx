@@ -30,6 +30,7 @@ const Body = () => {
     getRestaurants();
     // Empty dependency array => render only once
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,6 +65,9 @@ const Body = () => {
           console.log(data.coord.lon);
           setWeatherData(data);
           console.log(weatherData?.coord?.lat);
+
+          // Once weather data is fetched, call getRestaurants
+          getRestaurants(data.coord.lat, data.coord.lon);
         }
       } catch (error) {
         setError(error.message);
@@ -74,11 +78,10 @@ const Body = () => {
   }, [latitude, longitude]);
 
   // https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.4163164&lng=80.3670537&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING
-  async function getRestaurants() {
+  async function getRestaurants(latitude, longitude) {
     try {
-      const response = await fetch(
-        `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${weatherData?.coord?.lat}&lng=${weatherData?.coord?.lon}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
-      );
+      let apitobecalled = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${latitude}&lng=${longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
+      const response = await fetch(apitobecalled);
       const json = await response.json();
 
       // initialize checkJsonData() function to check Swiggy Restaurant data
@@ -148,7 +151,7 @@ const Body = () => {
         </div>
         <div className="my-4 flex justify-evenly">
           <div className="flex justify-between items-center">
-          <FaLocationArrow />
+            <FaLocationArrow />
             <div>{weatherData?.name}</div>
           </div>
           <div>
