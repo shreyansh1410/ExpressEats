@@ -63,6 +63,7 @@ const Body = () => {
           console.log(data.coord.lat);
           console.log(data.coord.lon);
           setWeatherData(data);
+          console.log(weatherData?.coord?.lat);
         }
       } catch (error) {
         setError(error.message);
@@ -76,7 +77,7 @@ const Body = () => {
   async function getRestaurants() {
     try {
       const response = await fetch(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.1159&lng=77.2868&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+        `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${weatherData?.coord?.lat}&lng=${weatherData?.coord?.lon}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
       );
       const json = await response.json();
 
@@ -148,7 +149,7 @@ const Body = () => {
         <div className="my-4 flex justify-evenly">
           <div className="flex justify-between items-center">
           <FaLocationArrow />
-            <div>{weatherData.name}</div>
+            <div>{weatherData?.name}</div>
           </div>
           <div>
             <input
