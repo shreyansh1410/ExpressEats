@@ -1,11 +1,12 @@
-import RestaurantCard from "./RestaurantCard";
-import { restaurantList } from "../constants";
-import { useEffect, useState, useContext } from "react";
-import Shimmer from "./Shimmer";
+import RestaurantCard from "./RestaurantCard.js";
+import { restaurantList } from "../constants.js";
+import { useEffect, useState, useContext, useSyncExternalStore } from "react";
+import Shimmer from "./Shimmer.js";
 import { Link } from "react-router-dom";
-import useOnline from "../Utils/useOnline";
-import UserContext from "../Utils/userContext";
+import useOnline from "../Utils/useOnline.js";
+import UserContext from "../Utils/userContext.js";
 import swiggy_api_URL from "../constants.js";
+import { FaLocationArrow } from "react-icons/fa6";
 
 function filterRestaurant(searchText, restaurants) {
   const filterData = restaurants.filter((restaurant) =>
@@ -19,18 +20,63 @@ const Body = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const { user, setUser } = useContext(UserContext);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
+  const [error, setError] = useState(null);
 
   // first the code renders and then useEffect is used
   useEffect(() => {
     getRestaurants();
     // Empty dependency array => render only once
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch user's geolocation
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+          },
+          (error) => {
+            setError(error.message);
+          }
+        );
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        if (latitude && longitude) {
+          const API_KEY = `f9090a41ba4a96d5447af66f8bac02a4`;
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
+
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          console.log(data.coord.lat);
+          console.log(data.coord.lon);
+          setWeatherData(data);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchWeatherData();
+  }, [latitude, longitude]);
 
   // https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.4163164&lng=80.3670537&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING
   async function getRestaurants() {
     try {
       const response = await fetch(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.4163164&lng=80.3670537&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.1159&lng=77.2868&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
       );
       const json = await response.json();
 
@@ -79,33 +125,42 @@ const Body = () => {
     <div className="Body font-quicksand">
       <div className="flex justify-around mx-6 my-4 items-center">
         <div className="search-container w-200 h-10 rounded-md">
-          <input
-            type="text"
-            className="search-box h-10 rounded-lg focus:bg-red-20 w-[400px] hover:shadow-md text-left px-4 text-black placeholder-black space-x-2 border-2 border-black"
-            placeholder="Search for your favourite restaurants"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          ></input>
-          <button
-            className="search-btn bg-gray-800 text-white w-[100px] rounded-lg hover:shadow-md p-2"
-            onClick={() => {
-              const data = filterRestaurant(searchText, allRestaurants);
-              setFilteredRestaurants(data);
-            }}
-          >
-            Go
-          </button>
+          <form>
+            <input
+              type="text"
+              className="search-box h-10 rounded-lg focus:bg-red-20 w-[400px] hover:shadow-md text-left px-4 text-black placeholder-black space-x-2 border-2 border-black"
+              placeholder="Search for your favourite restaurants"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            ></input>
+            <button
+              type="submit"
+              className="search-btn bg-gray-800 text-white w-[100px] rounded-lg hover:shadow-md p-2"
+              onClick={() => {
+                const data = filterRestaurant(searchText, allRestaurants);
+                setFilteredRestaurants(data);
+              }}
+            >
+              Go
+            </button>
+          </form>
         </div>
-        <div className="my-4">
-          <input
-            value={user.name}
-            onChange={(e) =>
-              setUser({
-                name: e.target.value,
-                email: "random@gmail.com",
-              })
-            }
-          ></input>
+        <div className="my-4 flex justify-evenly">
+          <div className="flex justify-between items-center">
+          <FaLocationArrow />
+            <div>{weatherData.name}</div>
+          </div>
+          <div>
+            <input
+              value={user.name}
+              onChange={(e) =>
+                setUser({
+                  name: e.target.value,
+                  email: "random@gmail.com",
+                })
+              }
+            ></input>
+          </div>
         </div>
       </div>
       <div className="restaurant-list flex flex-wrap my-5 mx-[100px]">
