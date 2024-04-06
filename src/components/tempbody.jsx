@@ -55,7 +55,7 @@ const Body = () => {
     const fetchWeatherData = async () => {
       try {
         if (latitude && longitude) {
-          const API_KEY = `f9090a41ba4a96d5447af66f8bac02a4`;
+          const API_KEY = process.env.OPEN_WEATHER_API_KEY;
           const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
 
           const response = await fetch(apiUrl);
