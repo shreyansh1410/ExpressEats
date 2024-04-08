@@ -1,4 +1,4 @@
-import { IMG_URL_CDN } from "../constants";
+import { IMG_URL_CDN } from "../Utils/constants";
 import { useContext } from "react";
 import UserContext from "../Utils/userContext";
 

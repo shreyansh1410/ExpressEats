@@ -7,7 +7,7 @@ import {
   RESTAURANT_TYPE_KEY,
   MENU_ITEM_TYPE_KEY,
   ITEM_IMG_CDN_URL,
-} from "../constants";
+} from "../Utils/constants";
 import useRestaurant from "../Utils/useRestaurant";
 import { addItem } from "../Utils/cartSlice";
 import { useDispatch } from "react-redux";

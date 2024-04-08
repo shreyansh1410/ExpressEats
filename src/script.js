@@ -1,5 +1,5 @@
 import React, { lazy, useState } from "react";
-import ReactDOM from 'react-dom/client';
+import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Body from "./components/tempbody";
@@ -25,83 +25,79 @@ const About = lazy(() => import("./components/About"));
 const Cart = lazy(() => import("./components/Cart"));
 
 const AppLayout = () => {
+  const [user, setUser] = useState({
+    name: "Shreyansh Shukla",
+    email: "shreyansh@mail.com",
+  });
 
-    const [user, setUser] = useState({
-        name: "Shreyansh Shukla",
-        email: "shreyansh@mail.com"
-    });
-
-    return (
-        <Provider store={store}>
-
-            <UserContext.Provider value={
-                {
-                    user: user,
-                    setUser: setUser,
-                }
-            }>
-                <Header />
-                <Outlet />
-                <Footer />
-            </UserContext.Provider>
-        </Provider>
-    )
-}
+  return (
+    <Provider store={store}>
+        <Header />
+        <Outlet />
+        <Footer />
+    </Provider>
+  );
+};
 
 const appRouter = createBrowserRouter([
-    {
+  {
+    path: "/",
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [
+      {
         path: "/",
-        element: <AppLayout />,
-        errorElement: <Error />,
+        element: <Body />,
+      },
+      {
+        path: "/about",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <About />
+          </Suspense>
+        ),
         children: [
-            {
-                path: "/",
-                element: <Body />
-            },
-            {
-                path: "/about",
-                element:
-                    <Suspense fallback={<h1>Loading...</h1>}>
-                        <About />
-                    </Suspense>,
-                children: [{
-                    path: "profile",
-                    element: <Profile />
-                }]
-            },
-            {
-                path: "/contact",
-                element: <Contact />
-            },
-            {
-                path: "restaurant/:resId",
-                element: <RestaurantMenu />
-            },
-            {
-                path: "/instamart",
-                element:
-                    <Suspense fallback=<Shimmer />>
-                        <Instamart />
-                    </Suspense>
-            },
-            {
-                path: "/cart",
-                element:
-                    <Suspense fallback=<Shimmer />>
-                        <Cart />
-                    </Suspense>
-            },
-            {
-                path: "login",
-                element: <Login />
-            },
-            {
-                path: "signup",
-                element: <Signup />
-            },
-        ]
-    }
-])
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+        ],
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "restaurant/:resId",
+        element: <RestaurantMenu />,
+      },
+      {
+        path: "/instamart",
+        element: (
+          <Suspense fallback=<Shimmer />>
+            <Instamart />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/cart",
+        element: (
+          <Suspense fallback=<Shimmer />>
+            <Cart />
+          </Suspense>
+        ),
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "signup",
+        element: <Signup />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={appRouter} />);

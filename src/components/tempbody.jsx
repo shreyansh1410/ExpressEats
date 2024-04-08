@@ -1,11 +1,11 @@
-import RestaurantCard from "./RestaurantCard.js";
-import { restaurantList } from "../constants.js";
+import RestaurantCard from "./RestaurantCard";
+import { restaurantList } from "../Utils/constants";
 import { useEffect, useState, useContext, useSyncExternalStore } from "react";
-import Shimmer from "./Shimmer.js";
-import { Link } from "react-router-dom";
-import useOnline from "../Utils/useOnline.js";
-import UserContext from "../Utils/userContext.js";
-import swiggy_api_URL from "../constants.js";
+import Shimmer from "./Shimmer";
+import { Link, useNavigate } from "react-router-dom";
+import useOnline from "../Utils/useOnline";
+import UserContext from "../Utils/userContext";
+import swiggy_api_URL from "../Utils/constants";
 import { FaLocationArrow } from "react-icons/fa6";
 
 function filterRestaurant(searchText, restaurants) {
@@ -15,7 +15,7 @@ function filterRestaurant(searchText, restaurants) {
   return filterData;
 }
 
-const Body = () => {
+const tempbody = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
@@ -118,7 +118,7 @@ const Body = () => {
   // console.log("render");
 
   //early return:
-  if (!allRestaurants) return null;
+  if (!allRestaurants) return <Shimmer />;
 
   // if(filteredRestaurants?.length===0)
   //     return <h1>No restaurants found for the name</h1>
@@ -188,4 +188,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default tempbody;
