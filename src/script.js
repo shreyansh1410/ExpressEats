@@ -5,7 +5,13 @@ import Footer from "./components/Footer";
 import Body from "./components/tempbody";
 // import About from "./components/About";
 import Error from "./components/Error";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  useLocation,
+  useRoutes,
+} from "react-router-dom";
 import Contact from "./components/Contact";
 import RestaurantMenu from "./components/RestaurantMenu";
 import Profile from "./components/Profile";
@@ -24,17 +30,35 @@ const Instamart = lazy(() => import("./components/Instamart"));
 const About = lazy(() => import("./components/About"));
 const Cart = lazy(() => import("./components/Cart"));
 
+const routes = [
+  { path: "*", element: <Body /> },
+  { path: "about", element: <About /> },
+  { path: "contact", element: <Contact /> },
+  { path: "restaurant/:resId", element: <RestaurantMenu /> },
+  { path: "profile", element: <Profile /> },
+  { path: "instamart", element: <Instamart /> },
+  { path: "cart", element: <Cart /> },
+  { path: "login", element: <Login /> },
+  { path: "signup", element: <Signup /> },
+];
+
 const AppLayout = () => {
   const [user, setUser] = useState({
     name: "Shreyansh Shukla",
     email: "shreyansh@mail.com",
   });
 
+  const location = useLocation();
+  const routing = useRoutes(routes);
+
+  const isAuthRoute = location.pathname === "/login" || location.pathname === "/signup";
+
+
   return (
     <Provider store={store}>
-        <Header />
-        <Outlet />
-        <Footer />
+      {!isAuthRoute && <Header />}
+      <Outlet />
+      <Footer />
     </Provider>
   );
 };

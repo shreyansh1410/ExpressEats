@@ -80,7 +80,7 @@ const Header = () => {
     return (
       <div className="flex justify-between align-middle font-medium shadow-md font-quicksand items-center">
         <Title />
-        
+          {console.log(user)};
           <div className="nav-items">
             <ul className="sidelist flex my-8">
               <li className="mx-2">
