@@ -94,7 +94,7 @@ const Login = () => {
   };
 
   if (redirect) {
-    return <Redirect to="/tempbody" />;
+    return null;
   }
 
   return (

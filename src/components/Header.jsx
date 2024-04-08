@@ -114,7 +114,7 @@ const Header = () => {
               className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg"
             >
               <Link to='/Login'> Sign In </Link>
-            </button>}}
+            </button>}
           </div>
         
       </div>
