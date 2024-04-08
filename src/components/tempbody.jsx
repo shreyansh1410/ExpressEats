@@ -155,15 +155,7 @@ const tempbody = () => {
             <div>{weatherData?.name}</div>
           </div>
           <div>
-            <input
-              value={user.name}
-              onChange={(e) =>
-                setUser({
-                  name: e.target.value,
-                  email: "random@gmail.com",
-                })
-              }
-            ></input>
+            
           </div>
         </div>
       </div>
