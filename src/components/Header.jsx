@@ -79,7 +79,7 @@ const Header = () => {
       <Title />
       
       <div className="nav-items">
-        <ul className="sidelist flex my-8">
+        <ul className="sidelist flex my-8 items-center px-2">
           <li className="mx-2">
             <Link to={"/"}>Home</Link>
           </li>
@@ -97,21 +97,22 @@ const Header = () => {
           <li className="mx-2">
             <Link to={"/instamart"}>Instamart</Link>
           </li>
-          <li data-testid="online-status">{isOnline ? "🟢" : "Offline🔴"}</li>
+          <li className="mx-2" data-testid="online-status">{isOnline ? "🟢" : "Offline🔴"}</li>
+          <li>{user && (
+            <button
+              onClick={handleSignOut}
+              className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg mx-2"
+            >
+              Sign Out
+            </button>
+          )}
+          {!user && (
+            <button className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg mx-2">
+              <Link to="/Login"> Sign In </Link>
+            </button>
+          )}</li>
         </ul>
-        {user && (
-          <button
-            onClick={handleSignOut}
-            className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg"
-          >
-            Sign Out
-          </button>
-        )}
-        {!user && (
-          <button className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg">
-            <Link to="/Login"> Sign In </Link>
-          </button>
-        )}
+        
       </div>
     </div>
   );
