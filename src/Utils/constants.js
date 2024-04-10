@@ -11,7 +11,9 @@ export const ITEM_IMG_CDN_URL = "https://media-assets.swiggy.com/swiggy/image/up
 
 export const IMG_URL_CDN = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/";
 
-export const BACKGROUND_IMG_URL = "https://img.freepik.com/free-photo/flat-lay-arrangement-with-salad-box-sauce_23-2148247883.jpg?w=1060&t=st=1712562159~exp=1712562759~hmac=0c2539c0b38648f364d930b6e28f926443ffe254d7697bdd66383decceec609a"
+export const BACKGROUND_IMG_URL = "https://img.freepik.com/free-photo/flat-lay-arrangement-with-salad-box-sauce_23-2148247883.jpg?w=1060&t=st=1712562159~exp=1712562759~hmac=0c2539c0b38648f364d930b6e28f926443ffe254d7697bdd66383decceec609a";
+
+export const UNSERVICABLE_IMAGE_URL = "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_476,h_476/portal/m/location_unserviceable.png"
 
 export const restaurantList = [
     {

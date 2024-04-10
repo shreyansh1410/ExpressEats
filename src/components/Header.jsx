@@ -95,7 +95,7 @@ const Header = () => {
             </Link>
           </li>
           <li className="mx-2">
-            <Link to={"/instamart"}>Instamart</Link>
+            <Link to={"/instamart"} className="text-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-texttext-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text animate-bounce">Instamart</Link>
           </li>
           <li className="mx-2" data-testid="online-status">{isOnline ? "🟢" : "Offline🔴"}</li>
           <li>{user && (
