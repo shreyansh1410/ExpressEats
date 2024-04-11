@@ -74,17 +74,19 @@ const RestaurantMenu = () => {
       <div className="restaurant-menu-content">
         <div className="menu-items-container">
           <div className="menu-title-wrap mx-9 my-6 flex justify-center">
-            <h3 className="menu-title text-3xl ">Recommended</h3>
+            <h3 className="menu-title text-3xl font-bold">Recommended</h3>
           </div>
-          <div className="menu-items-list flex justify-evenly flex-wrap">
+          <div className="flex justify-center text-xl ">
+            {menuItems.length} items available
+          </div>
+          <div className="menu-items-list flex justify-evenly flex-col">
             {menuItems.map((item, index) => (
+              
               <div
-                className="menu-item w-[400px] mx-3 my-3 h-[500px] hover:shadow-2xl p-8 hover:bg-gray-100"
+                className="flex justify-around menu-item w-full mx-3 my-3 h-[300px] hover:shadow-2xl p-8 hover:bg-gray-100"
                 key={item?.id}
               >
-                <p className="menu-count">
-                  {index + 1} of {menuItems.length} Items
-                </p>
+                
                 <div className="menu-item-details">
                   <h3 className="item-title text-2xl">{item?.name}</h3>
                   <p className="item-cost">
@@ -95,7 +97,7 @@ const RestaurantMenu = () => {
                         }).format(item?.price / 100)
                       : " "}
                   </p>
-                  {/* <p className="item-desc">{item?.description}</p> */}
+                  { <p className="item-desc">{item?.description}</p> }
                 </div>
                 <div className="menu-img-wrapper">
                   {item?.imageId && (
