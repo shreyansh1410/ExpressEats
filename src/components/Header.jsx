@@ -80,22 +80,22 @@ const Header = () => {
       
       <div className="nav-items">
         <ul className="sidelist flex my-8 items-center px-2">
-          <li className="mx-2">
+          <li className="mx-2 hover:text-red-600">
             <Link to={"/"}>Home</Link>
           </li>
-          <li className="mx-2">
+          <li className="mx-2 hover:text-red-600">
             <Link to={"/about"}>About</Link>
           </li>
-          <li className="mx-2">
+          <li className="mx-2 hover:text-red-600">
             <Link to={"/contact"}>Contact</Link>
           </li>
-          <li className="mx-2">
+          <li className="mx-2 hover:text-red-600">
             <Link to={"/cart"} data-testid="cartItems">
               Cart - {cartItems.length}
             </Link>
           </li>
           <li className="mx-2">
-            <Link to={"/instamart"} className="text-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-texttext-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text animate-bounce">Instamart</Link>
+            <Link to={"/instamart"} className="text-transparent bg-clip-texttext-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text animate-bounce">Instamart</Link>
           </li>
           <li className="mx-2" data-testid="online-status">{isOnline ? "🟢" : "Offline🔴"}</li>
           <li>{user && (

@@ -1,17 +1,13 @@
+import React from 'react'
 import { IMG_URL_CDN } from "../Utils/constants";
-import { useContext } from "react";
-import UserContext from "../Utils/userContext";
 
-const RestaurantCard = ({
-  name,
-  cloudinaryImageId,
-  costForTwo,
-  cuisines,
-  avgRating,
-  aggregatedDiscountInfoV3,
-}) => {
+const SlidingRestaurantCard = ({
+    name,
+    cloudinaryImageId,
+    aggregatedDiscountInfoV3,
+  }) => {
   return (
-    <div className="card w-[300px] ml-[70px] mx-2 my-2 mb-6 h-[400px] hover:shadow-2xl p-8 hover:bg-gray-100 font-quicksand">
+    <div className="card w-[300px] mx-16  my-2 mb-6 h-[300px] hover:shadow-2xl py-8 hover:bg-gray-100 font-quicksand">
       <div className="relative">
         <img
           className="w-60 h-40 rounded-xl"
@@ -31,11 +27,8 @@ const RestaurantCard = ({
       </div>
 
       <h2 className="font-bold text-xl font-quicksand">{name}</h2>
-      <p className="text-gray-500 font-medium">{cuisines.join(", ")}</p>
-      <p>💵: {costForTwo}</p>
-      <p>Rating: {avgRating} ⭐</p>
     </div>
-  );
-};
+  )
+}
 
-export default RestaurantCard;
+export default SlidingRestaurantCard

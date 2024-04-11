@@ -28,8 +28,9 @@ const CitySearch = ({ onSearch }) => {
         value={city}
         onChange={(e) => setCity(e.target.value)}
         placeholder="Enter city name"
+        className="border-4 border-black-500 rounded-lg px-2 py-1 mr-2"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="bg-gray-800 text-white w-[100px] rounded-lg hover:shadow-md p-2">Search</button>
     </div>
   );
 };

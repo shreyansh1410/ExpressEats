@@ -9,6 +9,11 @@ import RestaurantCard from "./RestaurantCard";
 import CitySearch from "./CitySearch"; // Import CitySearch component
 import { UNSERVICABLE_IMAGE_URL } from "../Utils/constants";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropUpLine } from "react-icons/ri";
+import SlidingRestaurantCard from "./SlidingRestaurantCard";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function filterRestaurant(searchText, restaurants) {
   const filterData = restaurants.filter((restaurant) =>
@@ -28,6 +33,7 @@ const tempbody = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const [isServicable, setIsServicable] = useState(true);
+  const [headerText, setHeaderText] = useState("");
 
   // Fetch user's geolocation
   useEffect(() => {
@@ -97,6 +103,7 @@ const tempbody = () => {
         jsonData?.data?.cards[i]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants;
       if (checkData !== undefined) {
+        setHeaderText(jsonData?.data?.cards[0]?.card?.card?.header?.title);
         return checkData;
       }
     }
@@ -106,7 +113,50 @@ const tempbody = () => {
   const handleCitySearch = (lat, lon) => {
     setLatitude(lat);
     setLongitude(lon);
+    setIsServicable(true);
     setShowCitySearch(false); // Hide city search dialogue
+  };
+
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          color: "black",
+          background: "lightgray",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          color: "black",
+          background: "lightgray",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
   };
 
   const online = useOnline();
@@ -117,6 +167,50 @@ const tempbody = () => {
   if (!isServicable)
     return (
       <div>
+        <div className="flex justify-around mx-6 my-4 items-center">
+          <div className="search-container w-200 h-10 rounded-md">
+            <form>
+              <input
+                type="text"
+                className="search-box h-10 rounded-lg focus:bg-red-20 w-[400px] hover:shadow-md text-left px-4 text-black placeholder-black space-x-2 border-2 border-black"
+                placeholder="Search for your favourite restaurants"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              ></input>
+              <button
+                type="submit"
+                className="search-btn bg-gray-800 text-white w-[100px] rounded-lg hover:shadow-md p-2"
+                onClick={() => {
+                  const data = filterRestaurant(searchText, allRestaurants);
+                  setFilteredRestaurants(data);
+                }}
+              >
+                Go
+              </button>
+            </form>
+          </div>
+          <div className="my-4 flex justify-evenly rounded-lg border-2 border-red-600">
+            <div className="flex justify-between items-center w-40">
+              <FaLocationArrow />
+              <div className="items-start w-full">{weatherData?.name}</div>
+            </div>
+            <div className="flex items-center">
+              <button
+                className="hover:text-red-600"
+                onClick={() => setShowCitySearch(!showCitySearch)}
+              >
+                {!showCitySearch && (
+                  <RiArrowDropDownLine className="text-3xl" />
+                )}
+                {showCitySearch && <RiArrowDropUpLine className="text-3xl" />}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="relative left-[1075px]">
+          {showCitySearch && <CitySearch onSearch={handleCitySearch} />}{" "}
+          {/* Render CitySearch component */}
+        </div>
         <div className="flex justify-center my-10">
           <img
             className="w-60"
@@ -154,34 +248,62 @@ const tempbody = () => {
               </button>
             </form>
           </div>
-          <div className="my-4 flex justify-evenly">
-            <div className="flex justify-between items-center">
+          <div className="my-4 flex justify-evenly rounded-lg border-2 border-red-600">
+            <div className="flex justify-between items-center w-40">
               <FaLocationArrow />
-              <div>{weatherData?.name}</div>
+              <div className="items-start w-full">{weatherData?.name}</div>
             </div>
             <div className="flex items-center">
-              <button onClick={() => setShowCitySearch(true)}>
-                <RiArrowDropDownLine className="text-3xl" />
+              <button
+                className="hover:text-red-600"
+                onClick={() => setShowCitySearch(!showCitySearch)}
+              >
+                {!showCitySearch && (
+                  <RiArrowDropDownLine className="text-3xl" />
+                )}
+                {showCitySearch && <RiArrowDropUpLine className="text-3xl" />}
               </button>
-            </div>
-            <div>
-              {showCitySearch && <CitySearch onSearch={handleCitySearch} />}{" "}
-              {/* Render CitySearch component */}
             </div>
           </div>
         </div>
-        <div className="restaurant-list flex flex-wrap my-5 mx-[100px]">
-          {filteredRestaurants?.length === 0 ? (
-            <h1>No matching restaurants found</h1>
-          ) : (
-            filteredRestaurants?.map((restaurant) => {
+        <div className="relative left-[1075px]">
+          {showCitySearch && <CitySearch onSearch={handleCitySearch} />}{" "}
+          {/* Render CitySearch component */}
+        </div>
+        <div className="mx-60 px-4">
+          <div className="text-3xl font-bold">{headerText}</div>
+          <Slider {...settings}>
+            {filteredRestaurants?.map((restaurant) => {
               return (
                 <Link
                   to={"/restaurant/" + restaurant?.info?.id}
                   key={restaurant?.info?.id}
                 >
-                  <RestaurantCard {...restaurant?.info} />
+                  <SlidingRestaurantCard
+                    className="mx-10"
+                    {...restaurant?.info}
+                  />
                 </Link>
+              );
+            })}
+          </Slider>
+        </div>
+
+        <div className="restaurant-list flex flex-wrap mb-5 mx-[100px]">
+          {filteredRestaurants?.length === 0 ? (
+            <h1>No matching restaurants found</h1>
+          ) : (
+            filteredRestaurants?.map((restaurant) => {
+              return (
+                <>
+                
+                  <Link
+                    to={"/restaurant/" + restaurant?.info?.id}
+                    key={restaurant?.info?.id}
+                  >
+                    <RestaurantCard {...restaurant?.info} />
+                  </Link>
+                </>
               );
             })
           )}
