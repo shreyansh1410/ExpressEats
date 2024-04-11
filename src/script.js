@@ -48,17 +48,15 @@ const AppLayout = () => {
     email: "shreyansh@mail.com",
   });
 
-  const location = useLocation();
-  const routing = useRoutes(routes);
-
-  const isAuthRoute = location.pathname === "/login" || location.pathname === "/signup";
-
-
   return (
     <Provider store={store}>
-      {!isAuthRoute && <Header />}
-      <Outlet />
-      <Footer />
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="flex-grow">
+          <Outlet />
+        </div>
+        <Footer />
+      </div>
     </Provider>
   );
 };

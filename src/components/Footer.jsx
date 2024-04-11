@@ -2,7 +2,7 @@ import logo from "../Assets/Images/logo.png";
 
 const Footer = () => {
   return (
-    <div className="Footer text-gray-600 bg-gray-300 h-[300px] flex flex-col justify-between">
+    <div className="Footer text-gray-600 bg-gray-300 h-[220px] flex flex-col justify-between mt-auto z-10">
       <div className="flex justify-evenly">
         <div className="ml-2 mt-4 mb-2">
           <div>

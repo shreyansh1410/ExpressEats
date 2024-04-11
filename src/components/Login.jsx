@@ -13,7 +13,7 @@ import { Redirect } from "react-router-dom";
 const Login = () => {
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [redirect, setRedirect] = useState(false); 
+  const [redirect, setRedirect] = useState(false);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -53,7 +53,7 @@ const Login = () => {
             .then(() => {
               // Profile updated!
               setRedirect(true);
-              const { uid, email, displayName, photoURL } = auth?.currentUser;   //fetch user from the updated value (auth.currentUser), not user written above because that is the older value
+              const { uid, email, displayName, photoURL } = auth?.currentUser; //fetch user from the updated value (auth.currentUser), not user written above because that is the older value
               dispatch(
                 addUser({
                   uid: uid,
@@ -98,7 +98,7 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <div className="relative -top-32 ">
       <div className="w-full h-full absolute brightness-50">
         <img
           src={BACKGROUND_IMG_URL}
@@ -110,51 +110,53 @@ const Login = () => {
         onSubmit={(e) => {
           e.preventDefault();
         }}
-        className="absolute text-white h-[580px] w-11/12 md:w-3/12 mx-auto left-0 right-0 my-24 p-8 bg-black bg-opacity-80"
+        className="absolute text-white h-[500px] w-11/12 md:w-[800px] mx-auto left-0 right-0 my-36 p-10 bg-black bg-opacity-80 rounded-2xl flex"
       >
-        <h1 className="text-4xl font-semibold py-8">
-          {isSignedIn ? "Sign In" : "Sign Up"}
-        </h1>
-        {!isSignedIn && (
+        <div className="flex flex-col flex-grow">
+          <h1 className="text-4xl font-semibold py-2">
+            {isSignedIn ? "Sign In" : "Sign Up"}
+          </h1>
+          {!isSignedIn && (
+            <input
+              ref={name}
+              type="text"
+              placeholder="Full Name"
+              className="p-4 my-2 w-full h-14 rounded-lg bg-gray-800"
+            />
+          )}
           <input
-            ref={name}
+            ref={email}
             type="text"
-            placeholder="Full Name"
+            placeholder="Email Address"
             className="p-4 my-2 w-full h-14 rounded-lg bg-gray-800"
           />
-        )}
-        <input
-          ref={email}
-          type="text"
-          placeholder="Email Address"
-          className="p-4 my-2 w-full h-14 rounded-lg bg-gray-800"
-        />
-        <input
-          ref={password}
-          type="password"
-          placeholder="Password"
-          className="p-4 my-2 w-full h-14 rounded-lg bg-gray-800"
-        />
-        <p className="cursor-pointer flex justify-center text-red-600 text-xs">
-          {errorMessage}
-        </p>
-        <button
-          className="bg-red-600 rounded-lg px-10 py-2 my-4 w-full font-semibold saturate-150"
-          onClick={handleButtonClick}
-        >
-          {" "}
-          {isSignedIn ? "Sign In" : "Sign Up"}
-        </button>
+          <input
+            ref={password}
+            type="password"
+            placeholder="Password"
+            className="p-4 my-2 w-full h-14 rounded-lg bg-gray-800"
+          />
+          <p className="cursor-pointer flex justify-center text-red-600 text-xs">
+            {errorMessage}
+          </p>
+          <button
+            className="bg-red-600 rounded-lg px-10 py-2 my-2 w-full font-semibold saturate-150"
+            onClick={handleButtonClick}
+          >
+            {" "}
+            {isSignedIn ? "Sign In" : "Sign Up"}
+          </button>
+        </div>
 
-        <p onClick={toggleState} className="cursor-pointer font-bold mb-8 my-4">
-          {isSignedIn
-            ? "Don't have an account, Sign Up Now!"
-            : "Already registered, Sign In now!"}
-        </p>
+        <div className="flex flex-col my-2 h-14 py-8 px-4 m-2 w-1/4">
+          <p onClick={toggleState} className="cursor-pointer font-bold my-4">
+            {isSignedIn
+              ? "Don't have an account, Sign Up Now!"
+              : "Already registered, Sign In now!"}
+          </p>
 
-        <p className="cursor-pointer mb-8 my-4 flex justify-center">
-          &copy; Shreyansh Shukla
-        </p>
+          <p className="cursor-pointer mb-8 my-2">&copy; Shreyansh Shukla</p>
+        </div>
       </form>
     </div>
   );

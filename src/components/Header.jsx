@@ -75,7 +75,7 @@ const Header = () => {
   // }
 
   return (
-    <div className="flex justify-between align-middle font-medium shadow-md font-quicksand items-center">
+    <div className="flex justify-between align-middle font-medium shadow-md font-quicksand items-center z-10 bg-gray-300">
       <Title />
       
       <div className="nav-items">
