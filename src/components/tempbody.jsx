@@ -231,14 +231,14 @@ const tempbody = () => {
             <form>
               <input
                 type="text"
-                className="search-box h-10 rounded-lg focus:bg-red-20 w-[400px] hover:shadow-md text-left px-4 text-black placeholder-black space-x-2 border-2 border-black"
+                className="search-box h-10 rounded-lg focus:bg-red-20 w-[400px] hover:shadow-md text-left px-4 text-black placeholder-black space-x-2 border-2 border-red-600 mx-2"
                 placeholder="Search for your favourite restaurants"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               ></input>
               <button
                 type="submit"
-                className="search-btn bg-gray-800 text-white w-[100px] rounded-lg hover:shadow-md p-2"
+                className="search-btn bg-gray-800 text-white w-[100px] rounded-lg hover:shadow-md hover:bg-red-600 p-2"
                 onClick={() => {
                   const data = filterRestaurant(searchText, allRestaurants);
                   setFilteredRestaurants(data);
@@ -249,9 +249,9 @@ const tempbody = () => {
             </form>
           </div>
           <div className="my-4 flex justify-evenly rounded-lg border-2 border-red-600">
-            <div className="flex justify-between items-center w-40">
+            <div className="flex justify-between items-center w-40 mx-2">
               <FaLocationArrow />
-              <div className="items-start w-full">{weatherData?.name}</div>
+              <div className="items-start w-full mx-2">{weatherData?.name}</div>
             </div>
             <div className="flex items-center">
               <button

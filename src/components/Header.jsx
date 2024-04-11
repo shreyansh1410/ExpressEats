@@ -107,7 +107,7 @@ const Header = () => {
             </button>
           )}
           {!user && (
-            <button className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg mx-2">
+            <button className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg mx-2 border-2 border-red-600">
               <Link to="/Login"> Sign In </Link>
             </button>
           )}</li>
