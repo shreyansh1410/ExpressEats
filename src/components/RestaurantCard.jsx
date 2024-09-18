@@ -11,7 +11,7 @@ const RestaurantCard = ({
   aggregatedDiscountInfoV3,
 }) => {
   return (
-    <div className="card w-[300px] ml-[70px] mx-2 my-2 mb-6 h-[400px] hover:shadow-2xl p-8 hover:bg-gray-100 font-quicksand">
+    <div className="card w-[250px] ml-[70px] mx-2 my-2 mb-6 h-[400px] hover:shadow-2xl p-8 hover:bg-gray-100 font-quicksand">
       <div className="relative">
         <img
           className="w-60 h-40 rounded-xl"
