@@ -1,100 +1,88 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaLocationArrow } from "react-icons/fa6";
-import { restaurantList } from "../Utils/constants";
 import useOnline from "../Utils/useOnline";
 import UserContext from "../Utils/userContext";
 import Shimmer from "./Shimmer";
 import RestaurantCard from "./RestaurantCard";
 import CitySearch from "./CitySearch"; // Import CitySearch component
 import { UNSERVICABLE_IMAGE_URL } from "../Utils/constants";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { RiArrowDropUpLine } from "react-icons/ri";
+import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import SlidingRestaurantCard from "./SlidingRestaurantCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { IconButton } from "@mui/material";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
+// Helper function to filter restaurants based on search text
 function filterRestaurant(searchText, restaurants) {
-  const filterData = restaurants.filter((restaurant) =>
+  return restaurants.filter((restaurant) =>
     restaurant?.info?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
-  return filterData;
 }
 
-const tempbody = () => {
+const TempBody = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [showCitySearch, setShowCitySearch] = useState(false); // State variable to control city search dialogue
-  const [weatherData, setWeatherData] = useState(null);
-  const [error, setError] = useState(null);
+  const [showCitySearch, setShowCitySearch] = useState(false);
   const [isServicable, setIsServicable] = useState(true);
   const [headerText, setHeaderText] = useState("");
+  const [weatherData, setWeatherData] = useState(null); // To store weather data
+  const [error, setError] = useState(null);
 
   // Fetch user's geolocation
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
-          },
-          (error) => {
-            setError(error.message);
-          }
-        );
-      } catch (error) {
-        setError(error.message);
-      }
+    const fetchGeolocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          setError(error.message);
+        }
+      );
     };
 
-    fetchData();
+    fetchGeolocation();
   }, []);
 
   // Fetch weather data and restaurants when latitude and longitude are available
   useEffect(() => {
-    const fetchWeatherData = async () => {
+    const fetchWeatherAndRestaurants = async () => {
       try {
         if (latitude && longitude) {
           const API_KEY = process.env.OPEN_WEATHER_API_KEY;
-          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
+          const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
 
-          const response = await fetch(apiUrl);
-          const data = await response.json();
-          setWeatherData(data);
+          const weatherResponse = await fetch(weatherApiUrl);
+          const weatherData = await weatherResponse.json();
+          setWeatherData(weatherData);
 
-          // Once weather data is fetched, call getRestaurants
-          getRestaurants(data.coord.lat, data.coord.lon);
+          // Fetch restaurants based on the latitude and longitude
+          const restaurantsApiUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${latitude}&lng=${longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
+          const restaurantsResponse = await fetch(restaurantsApiUrl);
+          const restaurantsData = await restaurantsResponse.json();
+          
+          if (restaurantsData?.data?.cards[0]?.card?.card?.title == "Location Unserviceable")
+            setIsServicable(false);
+          
+          const resData = await checkJsonData(restaurantsData);
+          setAllRestaurants(resData);
+          setFilteredRestaurants(resData);
         }
       } catch (error) {
         setError(error.message);
       }
     };
 
-    fetchWeatherData();
+    fetchWeatherAndRestaurants();
   }, [latitude, longitude]);
-
-  // Fetch restaurants based on latitude and longitude
-  async function getRestaurants(latitude, longitude) {
-    try {
-      let apiUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${latitude}&lng=${longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
-      const response = await fetch(apiUrl);
-      const json = await response.json();
-      console.log();
-      if (json?.data?.cards[0]?.card?.card?.title == "Location Unserviceable")
-        setIsServicable(false);
-      const resData = await checkJsonData(json);
-      setAllRestaurants(resData);
-      setFilteredRestaurants(resData);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   // Check and extract Swiggy restaurant data from the API response
   async function checkJsonData(jsonData) {
@@ -118,34 +106,40 @@ const tempbody = () => {
   };
 
   function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
+    const { onClick } = props;
     return (
-      <div
-        className={className}
-        style={{
-          ...style,
-          display: "block",
-          color: "black",
-          background: "lightgray",
-        }}
+      <IconButton
         onClick={onClick}
-      />
+        style={{
+          position: "absolute",
+          right: "-40px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          color: "white",
+        }}
+      >
+        <ArrowForwardIos />
+      </IconButton>
     );
   }
 
   function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
+    const { onClick } = props;
     return (
-      <div
-        className={className}
-        style={{
-          ...style,
-          display: "block",
-          color: "black",
-          background: "lightgray",
-        }}
+      <IconButton
         onClick={onClick}
-      />
+        style={{
+          position: "absolute",
+          left: "-40px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          color: "white",
+        }}
+      >
+        <ArrowBackIos />
+      </IconButton>
     );
   }
 
@@ -223,9 +217,10 @@ const tempbody = () => {
         </div>
       </div>
     );
-  else
-    return (
-      <div className="Body font-quicksand">
+
+  return (
+    <div className="Body font-quicksand">
+      {filteredRestaurants.length > 0 && (
         <div className="flex justify-around mx-6 my-4 items-center">
           <div className="search-container w-200 h-10 rounded-md">
             <form>
@@ -266,10 +261,16 @@ const tempbody = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {filteredRestaurants.length > 0 && (
         <div className="relative left-[1075px]">
           {showCitySearch && <CitySearch onSearch={handleCitySearch} />}{" "}
           {/* Render CitySearch component */}
         </div>
+      )}
+
+      {filteredRestaurants.length > 0 && (
         <div className="mx-60 px-4">
           <div className="text-3xl font-bold">{headerText}</div>
           <Slider {...settings}>
@@ -288,28 +289,30 @@ const tempbody = () => {
             })}
           </Slider>
         </div>
+      )}
 
-        <div className="restaurant-list flex flex-wrap mb-5 mx-[100px]">
-          {filteredRestaurants?.length === 0 ? (
-            <h1>No matching restaurants found</h1>
-          ) : (
-            filteredRestaurants?.map((restaurant) => {
-              return (
-                <>
-                
-                  <Link
-                    to={"/restaurant/" + restaurant?.info?.id}
-                    key={restaurant?.info?.id}
-                  >
-                    <RestaurantCard {...restaurant?.info} />
-                  </Link>
-                </>
-              );
-            })
-          )}
-        </div>
+      <div className="restaurant-list flex flex-wrap mb-5 mx-60">
+        {filteredRestaurants.length === 0 ? (
+          <div className="flex justify-center items-center h-full p-4">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-700 text-center">
+              Please wait while we search for the best restaurants nearest to you...
+            </h1>
+          </div>
+        ) : (
+          filteredRestaurants.map((restaurant) => {
+            return (
+              <Link
+                to={"/restaurant/" + restaurant?.info?.id}
+                key={restaurant?.info?.id}
+              >
+                <RestaurantCard {...restaurant?.info} />
+              </Link>
+            );
+          })
+        )}
       </div>
-    );
+    </div>
+  );
 };
 
-export default tempbody;
+export default TempBody;
