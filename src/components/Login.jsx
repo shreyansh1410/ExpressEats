@@ -78,12 +78,12 @@ const Login = () => {
         />
         {errorMessage && <p className="text-red-600 text-xs mb-2">{errorMessage}</p>}
         <button
-          className="bg-blue-500 text-white rounded-lg px-6 py-2 my-2 w-full font-semibold"
+          className="bg-red-500 text-white rounded-lg px-6 py-2 my-2 w-full font-semibold"
           onClick={handleButtonClick}
         >
           {isSignedIn ? "Sign In" : "Sign Up"}
         </button>
-        <p onClick={toggleState} className="cursor-pointer text-blue-500 text-center">
+        <p onClick={toggleState} className="cursor-pointer text-red-500 text-center">
           {isSignedIn
             ? "Don't have an account? Sign Up Now!"
             : "Already have an account? Sign In now!"}
