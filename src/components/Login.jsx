@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { validateEmailPass } from "../Utils/validate";
-import { BACKGROUND_IMG_URL, USER_AVATAR } from "../Utils/constants";
+import { BACKGROUND_IMG_URL } from "../Utils/constants";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useDispatch } from 'react-redux';
 import { addUser } from '../Utils/userSlice'; // Import your user slice
@@ -29,7 +29,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name?.current?.value,
-            photoURL: USER_AVATAR,
+            // photoURL: USER_AVATAR,
           }).then(() => {
             const { uid, email, displayName, photoURL } = auth.currentUser;
             dispatch(addUser({ uid, email, displayName, photoURL }));

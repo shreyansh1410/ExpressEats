@@ -1,34 +1,33 @@
-import React from 'react'
+import React from "react";
 import { IMG_URL_CDN } from "../Utils/constants";
 
 const SlidingRestaurantCard = ({
-    name,
-    cloudinaryImageId,
-    aggregatedDiscountInfoV3,
-  }) => {
+  name,
+  cloudinaryImageId,
+  aggregatedDiscountInfoV3,
+}) => {
   return (
-    <div className="card w-[250px] mx-16  my-2 mb-6 h-[350px] hover:shadow-2xl py-8 hover:bg-gray-100 font-quicksand">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 h-72">
       <div className="relative">
         <img
-          className="w-full h-40 rounded-xl"
+          className="w-full h-48 object-cover"
           src={IMG_URL_CDN + cloudinaryImageId}
-          alt="restaurant-logo"
+          alt={name}
         />
         {aggregatedDiscountInfoV3?.header && (
-          <div
-            className="font-bold absolute top-28 left-0 bg-transparent text-white text-2xl p-2 z-10 whitespace-nowrap overflow-hidden overflow-ellipsis"
-            style={{ maxWidth: "240px" }}
-          >
-            {aggregatedDiscountInfoV3.header}{" "}
-            {aggregatedDiscountInfoV3.subHeader}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white p-2">
+            <p className="text-lg font-bold truncate">
+              {aggregatedDiscountInfoV3.header}{" "}
+              {aggregatedDiscountInfoV3.subHeader}
+            </p>
           </div>
         )}
-        <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black to-transparent z-0" />
       </div>
-
-      <h2 className="font-bold text-xl font-quicksand ml-2">{name}</h2>
+      <div className="p-4">
+        <h2 className="text-lg font-bold truncate">{name}</h2>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default SlidingRestaurantCard
+export default SlidingRestaurantCard;

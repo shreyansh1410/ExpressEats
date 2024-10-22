@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import FoodItems from './FoodItems';
-import { clearCart } from '../Utils/cartSlice';
-import { Link } from 'react-router-dom';
-import Modal from './Modal'; // Import the Modal component
-import Login from './Login'; // Import the Login component
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import FoodItems from "./FoodItems";
+import { clearCart } from "../Utils/cartSlice";
+import { Link, useNavigate } from "react-router-dom";
+import Modal from "./Modal"; // Import the Modal component
+import Login from "./Login"; // Import the Login component
 
 const Cart = () => {
   const cartItems = useSelector((store) => store.cart.items);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleClearCart = () => {
     dispatch(clearCart());
@@ -51,15 +52,15 @@ const Cart = () => {
           Please sign in to access your cart.
         </p>
         <button
-          onClick={openLoginModal}
-          className="bg-blue-500 text-white py-2 px-4 rounded-md"
+          onClick={() => {navigate("/login")}}
+          className="bg-red-500 text-white py-2 px-4 rounded-md"
         >
           Sign In
         </button>
-        
-        <Modal isOpen={isModalOpen} onClose={closeLoginModal}>
-          <Login />
-        </Modal>
+
+        {/* <Modal isOpen={isModalOpen} onClose={closeLoginModal}> */}
+        {/* <Login /> */}
+        {/* </Modal> */}
       </div>
     );
   }

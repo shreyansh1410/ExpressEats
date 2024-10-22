@@ -12,12 +12,14 @@ import { addItem } from "../Utils/cartSlice";
 import { useDispatch } from "react-redux";
 
 // Dummy image URL in case the item doesn't have an image
-const DUMMY_IMG_URL = "https://via.placeholder.com/250x150.png?text=No+Image";
+
+const DUMMY_IMG_URL =
+  "https://via.placeholder.com/250x150?text=No+Image+Available";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
-
   const dispatch = useDispatch();
+
   const addFoodItem = (item) => {
     dispatch(addItem(item));
   };
@@ -35,7 +37,7 @@ const RestaurantMenu = () => {
     <Shimmer />
   ) : (
     <div className="restaurant-menu font-quicksand">
-      <div className="restaurant-summary mx-9 my-3 flex justify-evenly flex-wrap shadow-md p-6 hover:shadow-lg rounded-lg max-w-7xl mx-auto">
+      <div className="restaurant-summary my-3 flex justify-evenly flex-wrap shadow-md p-6 hover:shadow-lg rounded-lg max-w-7xl mx-auto">
         <div className="restaurantImage w-80">
           <img
             className="restaurant-img rounded-lg"
@@ -43,6 +45,7 @@ const RestaurantMenu = () => {
             alt={restaurant?.name}
           />
         </div>
+
         <div className="restaurant-summary-details my-3 max-w-lg">
           <h2 className="restaurant-title text-4xl py-4 font-semibold">
             {restaurant?.name}
@@ -67,6 +70,7 @@ const RestaurantMenu = () => {
             >
               <i className="fa-solid fa-star"></i> {restaurant?.avgRating}
             </div>
+
             <div className="text-sm text-gray-500 mt-2">
               {restaurant?.sla?.slaString} | {restaurant?.costForTwoMessage}
             </div>
@@ -79,6 +83,7 @@ const RestaurantMenu = () => {
           <div className="menu-title-wrap mx-9 my-6 flex justify-center">
             <h3 className="menu-title text-3xl font-bold">Recommended</h3>
           </div>
+
           <div className="text-xl text-center mb-6">
             {menuItems.length} items available
           </div>
@@ -93,6 +98,7 @@ const RestaurantMenu = () => {
                   <h3 className="item-title text-2xl font-semibold mb-2">
                     {item?.name}
                   </h3>
+
                   <p className="item-cost text-lg text-gray-700 mb-2">
                     {item?.price > 0
                       ? new Intl.NumberFormat("en-IN", {
@@ -101,12 +107,14 @@ const RestaurantMenu = () => {
                         }).format(item?.price / 100)
                       : " "}
                   </p>
+
                   {item?.description && (
                     <p className="item-desc text-sm text-gray-500 mb-4">
                       {item?.description}
                     </p>
                   )}
                 </div>
+
                 <div className="menu-img-wrapper flex justify-center items-center">
                   <img
                     className="menu-item-img w-[250px] h-[150px] rounded-md object-cover"
@@ -118,6 +126,7 @@ const RestaurantMenu = () => {
                     alt={item?.name}
                   />
                 </div>
+
                 <button
                   className="bg-red-500 hover:bg-green-700 text-white font-bold py-2 mt-4 px-4 rounded-full w-full transform transition duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-400"
                   onClick={() => addFoodItem(item)}

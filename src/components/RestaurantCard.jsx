@@ -1,6 +1,5 @@
+import React from "react";
 import { IMG_URL_CDN } from "../Utils/constants";
-import { useContext } from "react";
-import UserContext from "../Utils/userContext";
 
 const RestaurantCard = ({
   name,
@@ -11,29 +10,40 @@ const RestaurantCard = ({
   aggregatedDiscountInfoV3,
 }) => {
   return (
-    <div className="card w-[250px] ml-[70px] mx-2 my-2 mb-6 h-[400px] hover:shadow-2xl p-8 hover:bg-gray-100 font-quicksand">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
       <div className="relative">
         <img
-          className="w-60 h-40 rounded-xl"
+          className="w-full h-48 object-cover"
           src={IMG_URL_CDN + cloudinaryImageId}
-          alt="restaurant-logo"
+          alt={name}
         />
         {aggregatedDiscountInfoV3?.header && (
-          <div
-            className="font-bold absolute top-28 left-0 bg-transparent text-white text-2xl p-2 z-10 whitespace-nowrap overflow-hidden overflow-ellipsis"
-            style={{ maxWidth: "240px" }}
-          >
-            {aggregatedDiscountInfoV3.header}{" "}
-            {aggregatedDiscountInfoV3.subHeader}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white p-2">
+            <p className="text-lg font-bold truncate">
+              {aggregatedDiscountInfoV3.header}{" "}
+              {aggregatedDiscountInfoV3.subHeader}
+            </p>
           </div>
         )}
-        <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black to-transparent z-0" />
       </div>
-
-      <h2 className="font-bold text-xl font-quicksand">{name}</h2>
-      <p className="text-gray-500 font-medium">{cuisines.join(", ")}</p>
-      <p>💵: {costForTwo}</p>
-      <p>Rating: {avgRating} ⭐</p>
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-2 truncate">{name}</h2>
+        <p className="text-gray-600 mb-2 truncate">{cuisines.join(", ")}</p>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700">{costForTwo}</span>
+          <span
+            className={`px-2 py-1 rounded-full text-sm font-bold ${
+              avgRating >= 4
+                ? "bg-green-500 text-white"
+                : avgRating >= 3
+                ? "bg-yellow-500 text-white"
+                : "bg-red-500 text-white"
+            }`}
+          >
+            ★ {avgRating}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

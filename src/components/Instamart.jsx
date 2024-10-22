@@ -1,29 +1,22 @@
 import { useState } from "react";
-import { Button, Collapse, Typography } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const Section = ({ title, description, isVisible, toggleVisibility }) => {
   return (
     <div className="border rounded-lg border-gray-300 p-4 mb-4 shadow-md">
       <div className="flex items-center justify-between">
-        <Typography variant="h6" className="font-semibold text-gray-800">
-          {title}
-        </Typography>
-        <Button
+        <h6 className="font-semibold text-gray-800 text-lg">{title}</h6>
+        <button
           onClick={toggleVisibility}
-          endIcon={isVisible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          variant="outlined"
-          color="primary"
+          className="flex items-center text-blue-500 border border-blue-500 rounded px-3 py-1 transition hover:bg-blue-500 hover:text-white"
         >
           {isVisible ? 'Hide' : 'Show'}
-        </Button>
+          {isVisible ? <FaChevronUp className="ml-2" /> : <FaChevronDown className="ml-2" />}
+        </button>
       </div>
-      <Collapse in={isVisible}>
-        <Typography variant="body2" className="mt-2 text-gray-600">
-          {description}
-        </Typography>
-      </Collapse>
+      {isVisible && (
+        <p className="mt-2 text-gray-600">{description}</p>
+      )}
     </div>
   );
 };
@@ -39,12 +32,10 @@ const Instamart = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <Typography variant="h4" className="text-center font-bold mb-6">
-        Welcome to Instamart
-      </Typography>
-      <Typography variant="h5" className="text-center mb-4 text-gray-700">
+      <h4 className="text-center font-bold mb-6 text-4xl">Welcome to Instamart</h4>
+      <h5 className="text-center mb-4 text-gray-700 text-2xl">
         We are currently building this feature. Stay tuned for updates!
-      </Typography>
+      </h5>
       <Section
         title="About Instamart"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."

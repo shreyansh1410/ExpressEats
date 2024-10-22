@@ -1,120 +1,154 @@
-import { useState, useContext, useEffect } from "react";
-import logo from "../Assets/Images/logo.png";
-import { Link } from "react-router-dom";
-import UserContext from "../Utils/userContext";
-import useOnline from "../Utils/useOnline";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../Utils/firebase";
 import { addUser, removeUser } from "../Utils/userSlice";
-import Login from "./Login";
-
-const Title = () => {
-  return (
-    <h1 id="title" key="h2">
-      <a className="logonameandimage" href="/">
-        <img
-          data-testid="logo"
-          alt="logo"
-          className="logo w-60 mx-5 my-5 "
-          src={logo}
-        ></img>
-      </a>
-    </h1>
-  )
-}
+import useOnline from "../Utils/useOnline";
+import logo from "../Assets/Images/logo.png";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isOnline = useOnline();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const user = useSelector((store) => store.user);
-  console.log(user + "from header.jsx");
-
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {})
-      .catch((error) => {
-        navigate("/error");
-      })
-  }
+  const cartItems = useSelector((store) => store.cart.items);
 
   useEffect(() => {
-    //writing in useEffect coz we only have to do this only once
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("user is logged in from header");
-        // User is signed in
         const { uid, email, displayName, photoURL } = user;
-        dispatch(
-          addUser({
-            uid: uid,
-            email: email,
-            displayName: displayName,
-            photoURL: photoURL,
-          })
-        )
-        navigate("/")
+        dispatch(addUser({ uid, email, displayName, photoURL }));
+        navigate("/");
       } else {
-        // User is signed out
-        dispatch(removeUser())
-        navigate("/")
+        dispatch(removeUser());
+        navigate("/");
       }
-    })
-    //Unsubscribe from store when component unmounts
-    return () => unsubscribe()
-  }, [navigate, dispatch])
+    });
+    return () => unsubscribe();
+  }, [dispatch, navigate]);
 
-  const cartItems = useSelector((store) => store.cart.items)
-  // console.log(cartItems.length);
-  // for (var i = 0; i < cartItems.length; i++) {
-  //     console.log(cartItems[i].name);
-  // }
+  const handleSignOut = () => {
+    signOut(auth).catch((error) => {
+      console.error("Sign out error:", error);
+      navigate("/error");
+    });
+  };
+
+  const NavLink = ({ to, children }) => (
+    <li className="mx-2">
+      <Link
+        to={to}
+        className="text-gray-700 hover:text-red-600 transition-colors duration-300"
+      >
+        {children}
+      </Link>
+    </li>
+  );
 
   return (
-    <div className="flex justify-between align-middle font-medium shadow-md font-quicksand items-center z-10 bg-gray-300">
-      <Title />
-      
-      <div className="nav-items">
-        <ul className="sidelist flex my-8 items-center px-2">
-          <li className="mx-2 hover:text-red-600">
-            <Link to={"/"}>Home</Link>
-          </li>
-          <li className="mx-2 hover:text-red-600">
-            <Link to={"/about"}>About</Link>
-          </li>
-          <li className="mx-2 hover:text-red-600">
-            <Link to={"/contact"}>Contact</Link>
-          </li>
-          <li className="mx-2 hover:text-red-600">
-            <Link to={"/cart"} data-testid="cartItems">
-              Cart - {cartItems.length}
-            </Link>
-          </li>
-          <li className="mx-2">
-            <Link to={"/instamart"} className="text-transparent bg-clip-texttext-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text animate-bounce">Instamart</Link>
-          </li>
-          <li className="mx-2" data-testid="online-status">{isOnline ? "🟢" : "Offline🔴"}</li>
-          <li>{user && (
+    <header className="bg-white shadow-md font-quicksand">
+      <div className="mx-12">
+        <div className="flex justify-between items-center py-4">
+          <Link to="/" className="flex-shrink-0">
+            <img
+              data-testid="logo"
+              alt="logo"
+              className="w-60 h-auto"
+              src={logo}
+            />
+          </Link>
+
+          <nav className="hidden md:block">
+            <ul className="flex items-center space-x-4">
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/about">About</NavLink>
+              <NavLink to="/contact">Contact</NavLink>
+              <NavLink to="/instamart">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-500 animate-pulse">
+                  Instamart
+                </span>
+              </NavLink>
+              <NavLink to="/cart" data-testid="cartItems">
+                Cart - {cartItems.length}
+              </NavLink>
+            </ul>
+          </nav>
+
+          <div className="hidden md:flex items-center space-x-4">
+            <span
+              data-testid="online-status"
+              className={`h-3 w-3 rounded-full ${
+                isOnline ? "bg-green-500" : "bg-red-500"
+              }`}
+              title={isOnline ? "Online" : "Offline"}
+            ></span>
+            {user ? (
+              <button
+                onClick={handleSignOut}
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                to="/Login"
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
+
+          <div className="md:hidden">
             <button
-              onClick={handleSignOut}
-              className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg mx-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+              aria-label="toggle menu"
             >
-              Sign Out
+              <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current">
+                <path
+                  fillRule="evenodd"
+                  d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+                ></path>
+              </svg>
             </button>
-          )}
-          {!user && (
-            <button className="bg-red-200 py-2 px-4 h-12 my-2 rounded-lg mx-2 border-2 border-red-600">
-              <Link to="/Login"> Sign In </Link>
-            </button>
-          )}</li>
-        </ul>
-        
+          </div>
+        </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <ul className="pt-2 pb-4 space-y-2">
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/about">About</NavLink>
+              <NavLink to="/contact">Contact</NavLink>
+              <NavLink to="/instamart">Instamart</NavLink>
+              <NavLink to="/cart" data-testid="cartItems">
+                Cart - {cartItems.length}
+              </NavLink>
+              <li>
+                {user ? (
+                  <button
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-white bg-red-500 hover:bg-red-600 rounded-md transition-colors duration-300"
+                  >
+                    Sign Out
+                  </button>
+                ) : (
+                  <Link
+                    to="/Login"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-white bg-red-500 hover:bg-red-600 rounded-md transition-colors duration-300"
+                  >
+                    Sign In
+                  </Link>
+                )}
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
-    </div>
+    </header>
   );
 };
 
