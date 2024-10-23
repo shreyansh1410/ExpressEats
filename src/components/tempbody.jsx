@@ -31,6 +31,7 @@ const TempBody = () => {
   const [headerText, setHeaderText] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
 
   const online = useOnline();
 
@@ -96,6 +97,19 @@ const TempBody = () => {
     setLongitude(lon);
     setIsServicable(true);
     setShowCitySearch(false);
+    setIsSearching(false);
+  };
+
+  const handleSearch = () => {
+    const data = filterRestaurant(searchText, allRestaurants);
+    setFilteredRestaurants(data);
+    setIsSearching(true);
+  };
+
+  const handleSearchReset = () => {
+    setSearchText("");
+    setFilteredRestaurants(allRestaurants);
+    setIsSearching(false);
   };
 
   const SampleNextArrow = (props) => {
@@ -206,12 +220,17 @@ const TempBody = () => {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
+            {isSearching ? (
+              <button
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 border-r border-white transition duration-300"
+                onClick={handleSearchReset}
+              >
+                Reset
+              </button>
+            ) : null}
             <button
               className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-r-md transition duration-300"
-              onClick={() => {
-                const data = filterRestaurant(searchText, allRestaurants);
-                setFilteredRestaurants(data);
-              }}
+              onClick={handleSearch}
             >
               Search
             </button>
@@ -239,17 +258,13 @@ const TempBody = () => {
         </div>
       )}
 
-      {filteredRestaurants.length > 0 && (
+      {!isSearching && filteredRestaurants.length > 0 && (
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-4 px-12">{headerText}</h2>
           <div className="relative px-10">
-            {" "}
-            {/* Added padding for slider arrows */}
             <Slider {...settings}>
               {filteredRestaurants.map((restaurant) => (
                 <div key={restaurant?.info?.id} className="px-3">
-                  {" "}
-                  {/* Increased padding between slides */}
                   <Link to={`/restaurant/${restaurant?.info?.id}`}>
                     <SlidingRestaurantCard {...restaurant?.info} />
                   </Link>
